@@ -1,10 +1,41 @@
-// IMPORTANT: Replace this file with your existing border-data.js from your current deployment
-// This is just a placeholder to remind you to copy it over
-
 exports.handler = async (event) => {
-  // Your existing CORS proxy code goes here
-  return {
-    statusCode: 200,
-    body: JSON.stringify({ message: "Replace this with your actual border-data.js function" })
-  };
+  // Get the URL from query parameters
+  const targetUrl = event.queryStringParameters.url;
+  
+  if (!targetUrl) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ error: 'URL parameter is required' })
+    };
+  }
+
+  try {
+    // Fetch the data from the target URL
+    const response = await fetch(targetUrl);
+    const data = await response.text();
+    
+    // Return the data with CORS headers
+    return {
+      statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Content-Type': response.headers.get('content-type') || 'text/plain'
+      },
+      body: data
+    };
+  } catch (error) {
+    return {
+      statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      },
+      body: JSON.stringify({ 
+        error: 'Failed to fetch data',
+        message: error.message 
+      })
+    };
+  }
 };
