@@ -146,6 +146,12 @@
             opacity: 0.6;
         }
 
+        .source-logo {
+            height: 18px;
+            width: auto;
+            object-fit: contain;
+        }
+
         .info-section {
             background: rgba(255, 255, 255, 0.06);
             border: 2px solid rgba(255, 255, 255, 0.1);
@@ -617,16 +623,14 @@
                         wcogData[result.pairIndex] = { us: {}, canada: {} };
                     }
                     
-                    // Parse the Values field
-                    let delay = 'N/A';
+                    // Parse the Values field - store as number
+                    let delay = -1;
                     if (result.data && result.data.Values && result.data.Values[0]) {
                         const value = result.data.Values[0][0];
                         if (value === null) {
-                            delay = 'N/A';
-                        } else if (value === 0) {
-                            delay = 'No delay';
+                            delay = -1;
                         } else {
-                            delay = `${value} min`;
+                            delay = value; // Store as number (0, 5, 10, etc.)
                         }
                     }
                     
@@ -638,8 +642,10 @@
         }
 
         function getWCOGDelay(pairIndex, direction, type) {
-            if (wcogData[pairIndex] && wcogData[pairIndex][direction] && wcogData[pairIndex][direction][type]) {
-                return wcogData[pairIndex][direction][type];
+            if (wcogData[pairIndex] && wcogData[pairIndex][direction] && wcogData[pairIndex][direction][type] !== undefined) {
+                const value = wcogData[pairIndex][direction][type];
+                if (value === -1) return 'N/A';
+                return value; // Return as number for formatWaitTime
             }
             return 'N/A';
         }
@@ -737,14 +743,14 @@
                                 <span class="wait-value ${getDelayColor(getWCOGDelay(pairIndex, 'us', 'standard'))}">
                                     ${formatWaitTime(getWCOGDelay(pairIndex, 'us', 'standard'))}
                                 </span>
-                                <span class="source-label">WCOG</span>
+                                <img src="/wcog.png" alt="WCOG" class="source-logo">
                             </div>
                             ` : ''}
                             <div class="flex items-center gap-2">
                                 <span class="wait-value ${getDelayColor(port.passengerDelay)}">
                                     ${formatWaitTime(port.passengerDelay)}
                                 </span>
-                                <span class="source-label">CBP</span>
+                                <img src="/cbp.svg" alt="CBP" class="source-logo">
                             </div>
                         </div>
                         <div class="flex flex-col gap-2">
@@ -754,14 +760,14 @@
                                 <span class="wait-value ${getDelayColor(getWCOGDelay(pairIndex, 'us', 'nexus'))}">
                                     ${formatWaitTime(getWCOGDelay(pairIndex, 'us', 'nexus'))}
                                 </span>
-                                <span class="source-label">WCOG</span>
+                                <img src="/wcog.png" alt="WCOG" class="source-logo">
                             </div>
                             ` : ''}
                             <div class="flex items-center gap-2">
                                 <span class="wait-value ${getDelayColor(port.nexusDelay)}">
                                     ${formatWaitTime(port.nexusDelay)}
                                 </span>
-                                <span class="source-label">CBP</span>
+                                <img src="/cbp.svg" alt="CBP" class="source-logo">
                             </div>
                         </div>
                         ${pair.showUsCommercial ? `
@@ -772,14 +778,14 @@
                                 <span class="wait-value ${getDelayColor(getWCOGDelay(pairIndex, 'us', 'commercial'))}">
                                     ${formatWaitTime(getWCOGDelay(pairIndex, 'us', 'commercial'))}
                                 </span>
-                                <span class="source-label">WCOG</span>
+                                <img src="/wcog.png" alt="WCOG" class="source-logo">
                             </div>
                             ` : ''}
                             <div class="flex items-center gap-2">
                                 <span class="wait-value ${getDelayColor(port.commercialDelay)}">
                                     ${formatWaitTime(port.commercialDelay)}
                                 </span>
-                                <span class="source-label">CBP</span>
+                                <img src="/cbp.svg" alt="CBP" class="source-logo">
                             </div>
                         </div>
                         ` : ''}
@@ -867,14 +873,14 @@
                                 <span class="wait-value ${getDelayColor(getWCOGDelay(pairIndex, 'canada', 'standard'))}">
                                     ${formatWaitTime(getWCOGDelay(pairIndex, 'canada', 'standard'))}
                                 </span>
-                                <span class="source-label">WCOG</span>
+                                <img src="/wcog.png" alt="WCOG" class="source-logo">
                             </div>
                             ` : ''}
                             <div class="flex items-center gap-2">
                                 <span class="wait-value ${getDelayColor(port.travellersCanada)}">
                                     ${formatWaitTime(port.travellersCanada)}
                                 </span>
-                                <span class="source-label">CBSA</span>
+                                <img src="/cbsa.png" alt="CBSA" class="source-logo">
                             </div>
                         </div>
                         <div class="flex flex-col gap-2">
@@ -884,14 +890,14 @@
                                 <span class="wait-value ${getDelayColor(getWCOGDelay(pairIndex, 'canada', 'nexus'))}">
                                     ${formatWaitTime(getWCOGDelay(pairIndex, 'canada', 'nexus'))}
                                 </span>
-                                <span class="source-label">WCOG</span>
+                                <img src="/wcog.png" alt="WCOG" class="source-logo">
                             </div>
                             ` : ''}
                             <div class="flex items-center gap-2">
                                 <span class="wait-value wait-gray">
                                     N/A
                                 </span>
-                                <span class="source-label">CBSA</span>
+                                <img src="/cbsa.png" alt="CBSA" class="source-logo">
                             </div>
                         </div>
                         ${pair.showCanadaCommercial ? `
@@ -902,14 +908,14 @@
                                 <span class="wait-value ${getDelayColor(getWCOGDelay(pairIndex, 'canada', 'commercial'))}">
                                     ${formatWaitTime(getWCOGDelay(pairIndex, 'canada', 'commercial'))}
                                 </span>
-                                <span class="source-label">WCOG</span>
+                                <img src="/wcog.png" alt="WCOG" class="source-logo">
                             </div>
                             ` : ''}
                             <div class="flex items-center gap-2">
                                 <span class="wait-value ${getDelayColor(port.commercialCanada)}">
                                     ${formatWaitTime(port.commercialCanada)}
                                 </span>
-                                <span class="source-label">CBSA</span>
+                                <img src="/cbsa.png" alt="CBSA" class="source-logo">
                             </div>
                         </div>
                         ` : ''}
