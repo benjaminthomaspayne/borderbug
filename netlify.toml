@@ -3,13 +3,15 @@
   publish = "."
   functions = "netlify/functions"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
+# Subdomain redirect MUST come first (more specific)
 [[redirects]]
   from = "https://borderbug.netlify.app/*"
   to = "https://borderbug.com/:splat"
   status = 301
   force = true
+
+# Catch-all for SPA routing comes last (less specific)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
