@@ -100,10 +100,16 @@
             margin: 0 8px;
         }
 
-        /* Mobile: smaller font for crossing links */
+        /* Mobile: stack links vertically */
         @media (max-width: 640px) {
             .crossing-quick-links {
-                font-size: 12px;
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .bullet {
+                display: none;
             }
         }
 
