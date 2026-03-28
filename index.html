@@ -430,50 +430,381 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+/* CSS TO ADD - Place these styles in the <style> section of your index.html */
+
+/* Schematic styles for integrated title card */
+@keyframes pulse-ring-intense {
+    0% { transform: scale(0.6); opacity: 1; box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.8); }
+    70% { transform: scale(3); opacity: 0.1; box-shadow: 0 0 15px 5px rgba(251, 191, 36, 0); }
+    100% { transform: scale(3.5); opacity: 0; }
+}
+
+.pulse-dot {
+    position: relative;
+    cursor: pointer;
+    z-index: 20;
+}
+
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: inherit;
+    z-index: -1;
+    animation: pulse-ring-intense 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.spine-line { 
+    background: rgba(71, 85, 105, 0.3); 
+}
+
+.bb-tooltip-trigger { 
+    position: relative; 
+    display: inline-block; 
+}
+
+.bb-tooltip {
+    visibility: hidden; 
+    width: 200px; 
+    background-color: #0c4a6e; 
+    color: #f1f5f9;
+    text-align: left; 
+    border-radius: 8px; 
+    padding: 10px 12px; 
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    font-size: 11px; 
+    position: absolute; 
+    bottom: 140%; 
+    left: 50%; 
+    margin-left: -100px;
+    opacity: 0; 
+    transition: opacity 0.3s, visibility 0.3s; 
+    z-index: 50; 
+    text-transform: none;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+.bb-tooltip::after {
+    content: ""; 
+    position: absolute; 
+    top: 100%; 
+    left: 50%; 
+    margin-left: -5px;
+    border-width: 5px; 
+    border-style: solid; 
+    border-color: #0c4a6e transparent transparent transparent;
+}
+
+.bb-tooltip-trigger:hover .bb-tooltip { 
+    visibility: visible; 
+    opacity: 1; 
+}
+
+.name-box {
+    font-size: 10px;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.compass-rose {
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 767px) {
+    .compass-rose {
+        transform: rotate(90deg);
+    }
+}
+
+/* Make title card position relative for absolute-positioned compass */
+.title-card {
+    position: relative;
+}
     </style>
 </head>
 <body class="p-4">
     <div class="max-w-6xl mx-auto" id="top">
-        <!-- Header -->
+<!-- Header / Integrated Title Card -->
         <div class="title-card mb-6">
-            <div class="emojis">
-                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1fa-1f1f8.svg" alt="US Flag">
-                <span>🐞</span>
-                <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e8-1f1e6.svg" alt="Canada Flag">
-            </div>
-
-            <h1 class="title-text">BorderBug: Whatcom County - British Columbia border crossing tracker</h1>
             
-            <p class="subtitle">
-                A free tool to check border crossing wait times, weather, and traffic cams along the U.S.-Canada border between Whatcom County, Washington and the Lower Mainland of British Columbia — in both directions of travel
-            </p>
-
-            <div class="crossing-quick-links">
-                <a href="#peace-arch">Peace Arch</a><span class="bullet">•</span><a href="#pacific-highway">Pacific Highway</a><span class="bullet">•</span><a href="#lynden">Lynden</a><span class="bullet">•</span><a href="#sumas">Sumas</a><span class="bullet">•</span><a href="#point-roberts">Point Roberts</a>
+            <!-- Compass Rose (absolute positioned) -->
+            <div class="absolute top-6 right-6 md:top-8 md:right-10 flex flex-col items-center gap-1">
+                <div class="compass-rose w-10 h-10 md:w-12 md:h-12 relative">
+                    <svg viewBox="0 0 100 100" class="w-full h-full fill-none stroke-slate-500/40" stroke-width="2">
+                        <circle cx="50" cy="50" r="45" />
+                        <path d="M50 10 L50 90 M10 50 L90 50" stroke-dasharray="2 2" />
+                        <path d="M50 15 L58 45 L50 40 L42 45 Z" class="fill-amber-500/80 stroke-none" />
+                        <path d="M50 85 L58 55 L50 60 L42 55 Z" class="fill-slate-600 stroke-none" />
+                    </svg>
+                    <span class="absolute -top-1 left-1/2 -translate-x-1/2 text-[10px] font-bold text-amber-500/80 tracking-tighter">N</span>
+                </div>
             </div>
 
-            <button onclick="fetchData()" id="refreshBtn" class="refresh-btn">
-                <svg id="refreshIcon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
-                </svg>
-                Refresh
-            </button>
-            
-            <div id="lastUpdate" class="hidden last-update-display">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                Last checked: <span id="updateTime"></span>
+            <!-- Header Section -->
+            <div class="text-center mb-8">
+                <!-- Emoji Row -->
+                <div class="emojis">
+                    <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1fa-1f1f8.svg" alt="US Flag">
+                    <span>🐞</span>
+                    <img src="https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1f1e8-1f1e6.svg" alt="Canada Flag">
+                </div>
+                
+                <!-- Title -->
+                <h1 class="title-text">
+                    BorderBug: Whatcom County – British Columbia border crossing tracker
+                </h1>
+                
+                <!-- Subtitle -->
+                <p class="subtitle">
+                    A free tool to check border crossing wait times, weather, and traffic cams along the U.S.-Canada border between Whatcom County, Washington and the Lower Mainland of British Columbia — in <em>both</em> directions of travel
+                </p>
+
+                <!-- Utility Bar: Last Checked | Refresh | About -->
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-3 text-sm mb-4">
+                    <div id="lastUpdate" class="hidden flex items-center gap-2">
+                        <span class="text-slate-400">Last checked:</span>
+                        <span class="text-amber-400 font-medium" id="updateTime"></span>
+                    </div>
+                    
+                    <span class="hidden sm:inline text-slate-600">|</span>
+                    
+                    <button onclick="fetchData()" id="refreshBtn" class="refresh-btn">
+                        <svg id="refreshIcon" width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Refresh
+                    </button>
+                    
+                    <span class="hidden sm:inline text-slate-600">|</span>
+                    
+                    <a href="#about" class="text-sky-400 hover:text-sky-300 underline">
+                        About
+                    </a>
+                </div>
+
+                <!-- Error Message -->
+                <div id="errorMessage" class="hidden mt-4 p-4 bg-red-900 bg-opacity-30 border border-red-500 border-opacity-30 rounded-lg">
+                    <p class="font-semibold">Error loading data</p>
+                    <p class="text-sm mt-1 opacity-80" id="errorText"></p>
+                </div>
             </div>
 
-            <div id="errorMessage" class="hidden mt-4 p-4 bg-red-900 bg-opacity-30 border border-red-500 border-opacity-30 rounded-lg">
-                <p class="font-semibold">Error loading data</p>
-                <p class="text-sm mt-1 opacity-80" id="errorText"></p>
+            <!-- Divider -->
+            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-8"></div>
+
+            <!-- Mini Context Note -->
+            <div class="mb-6 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-center">
+                <p class="text-slate-200 text-sm leading-relaxed">
+                    Real-time data from <strong class="text-amber-400">3 sources</strong>: Road sensors + U.S. & Canadian border agencies (more info in NOTE section below)
+                </p>
             </div>
 
-            <p class="how-it-works-link">
-                <a href="#how-it-works">How it works</a>
-            </p>
+            <!-- Schematic Section -->
+            <div class="mb-8">
+                <div class="text-center mb-6">
+                    <p class="text-slate-200 text-base font-medium">Click dot to see wait times</p>
+                    <p class="text-slate-400 text-sm">Relative locations from west to east</p>
+                </div>
+
+                <div class="relative px-4 pb-12 pt-8">
+                    <div class="hidden md:block absolute top-1/2 left-0 right-0 h-[2px] spine-line -translate-y-1/2 z-0"></div>
+                    <div class="md:hidden absolute left-1/2 top-0 bottom-0 w-[2px] spine-line -translate-x-1/2 z-0"></div>
+
+                    <div class="relative flex flex-col md:flex-row items-center justify-between z-10 gap-10 md:gap-0">
+                        
+                        <!-- Point Roberts -->
+                        <div class="flex flex-row md:flex-col items-center justify-center min-w-[130px] gap-4 md:gap-0">
+                            <div class="order-3 md:order-1 w-24 md:w-auto text-left md:text-center md:mb-5">
+                                <span class="block text-sm text-white font-medium">Tsawwassen</span>
+                                <span class="block text-xs text-red-400 font-bold uppercase tracking-tight">BC</span>
+                            </div>
+                            <div class="order-2 flex flex-col items-center relative">
+                                <div class="flex items-center gap-2">
+                                    <a href="#point-roberts" class="block">
+                                        <div class="w-8 h-8 rounded border-2 border-amber-400 bg-[#022c22] flex items-center justify-center opacity-80 z-20 cursor-pointer hover:opacity-100 transition-opacity">
+                                            <div class="w-1.5 h-1.5 bg-amber-400 rounded-sm"></div>
+                                        </div>
+                                    </a>
+                                    <div class="bb-tooltip-trigger">
+                                        <span class="text-sky-400 font-bold text-xs cursor-help hover:text-sky-300">ⓘ</span>
+                                        <div class="bb-tooltip">
+                                            <span class="font-bold text-sky-200 text-xs">Regional Exclave Access</span><br>
+                                            Limited data available. Point Roberts is a remote U.S. exclave.
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="hidden md:block absolute top-10 name-box font-black text-white uppercase tracking-widest bg-[#063b31] px-2 py-1 border border-slate-700/50 rounded shadow-xl z-30">
+                                    Point Roberts /<br>Tsawwassen
+                                </span>
+                            </div>
+                            <div class="order-1 md:order-3 w-24 md:w-auto text-right md:text-center md:mt-10">
+                                <span class="hidden md:block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                <span class="block text-sm text-white font-medium">Point Roberts</span>
+                                <span class="md:hidden block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                            </div>
+                        </div>
+
+                        <!-- Boundary Bay -->
+                        <div class="flex flex-col items-center relative z-20">
+                            <span class="text-[18px] md:text-[22px] mb-1">🌊</span>
+                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] whitespace-nowrap text-center leading-tight">
+                                Boundary<br>Bay
+                            </span>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row items-center gap-10 md:gap-2">
+                            
+                            <!-- Peace Arch -->
+                            <div class="flex flex-row md:flex-col items-center justify-center min-w-[130px] gap-4 md:gap-0">
+                                <div class="order-3 md:order-1 w-24 md:w-auto text-left md:text-center md:mb-5">
+                                    <span class="block text-sm text-white font-medium">Surrey</span>
+                                    <span class="block text-xs text-red-400 font-bold uppercase tracking-tight">BC</span>
+                                </div>
+                                <div class="order-2 flex flex-col items-center relative">
+                                    <a href="#peace-arch" class="block">
+                                        <div class="pulse-dot w-8 h-8 rounded-full border-2 border-amber-400 bg-[#022c22] flex items-center justify-center shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                                            <div class="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
+                                        </div>
+                                    </a>
+                                    <span class="hidden md:block absolute top-10 name-box font-black text-white uppercase tracking-widest bg-[#063b31] px-2 py-1 border border-slate-700/50 rounded shadow-xl z-30">Peace Arch</span>
+                                </div>
+                                <div class="order-1 md:order-3 w-24 md:w-auto text-right md:text-center md:mt-10">
+                                    <span class="hidden md:block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                    <span class="block text-sm text-white font-medium">Blaine</span>
+                                    <span class="md:hidden block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                </div>
+                            </div>
+
+                            <!-- Pacific Highway -->
+                            <div class="flex flex-row md:flex-col items-center justify-center min-w-[130px] gap-4 md:gap-0">
+                                <div class="order-3 md:order-1 w-24 md:w-auto text-left md:text-center md:mb-5">
+                                    <span class="block text-sm text-white font-medium">Surrey</span>
+                                    <span class="block text-xs text-red-400 font-bold uppercase tracking-tight">BC</span>
+                                </div>
+                                <div class="order-2 flex flex-col items-center relative">
+                                    <a href="#pacific-highway" class="block">
+                                        <div class="pulse-dot w-8 h-8 rounded-full border-2 border-amber-400 bg-[#022c22] flex items-center justify-center shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                                            <div class="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
+                                        </div>
+                                    </a>
+                                    <span class="hidden md:block absolute top-10 name-box font-black text-white uppercase tracking-widest bg-[#063b31] px-2 py-1 border border-slate-700/50 rounded shadow-xl z-30">Pacific Hwy</span>
+                                </div>
+                                <div class="order-1 md:order-3 w-24 md:w-auto text-right md:text-center md:mt-10">
+                                    <span class="hidden md:block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                    <span class="block text-sm text-white font-medium">Blaine</span>
+                                    <span class="md:hidden block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lynden -->
+                        <div class="flex flex-row md:flex-col items-center justify-center min-w-[130px] gap-4 md:gap-0">
+                            <div class="order-3 md:order-1 w-24 md:w-auto text-left md:text-center md:mb-5">
+                                <span class="block text-sm text-white font-medium">Aldergrove</span>
+                                <span class="block text-xs text-red-400 font-bold uppercase tracking-tight">BC</span>
+                            </div>
+                            <div class="order-2 flex flex-col items-center relative">
+                                <a href="#lynden" class="block">
+                                    <div class="pulse-dot w-8 h-8 rounded-full border-2 border-amber-400 bg-[#022c22] flex items-center justify-center shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                                        <div class="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
+                                    </div>
+                                </a>
+                                <span class="hidden md:block absolute top-10 name-box font-black text-white uppercase tracking-widest bg-[#063b31] px-2 py-1 border border-slate-700/50 rounded shadow-xl z-30">
+                                    Lynden /<br>Aldergrove
+                                </span>
+                            </div>
+                            <div class="order-1 md:order-3 w-24 md:w-auto text-right md:text-center md:mt-10">
+                                <span class="hidden md:block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                <span class="block text-sm text-white font-medium">Lynden</span>
+                                <span class="md:hidden block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                            </div>
+                        </div>
+
+                        <!-- Sumas -->
+                        <div class="flex flex-row md:flex-col items-center justify-center min-w-[130px] gap-4 md:gap-0">
+                            <div class="order-3 md:order-1 w-24 md:w-auto text-left md:text-center md:mb-5">
+                                <span class="block text-sm text-white font-medium">Abbotsford</span>
+                                <span class="block text-xs text-red-400 font-bold uppercase tracking-tight">BC</span>
+                            </div>
+                            <div class="order-2 flex flex-col items-center relative">
+                                <a href="#sumas" class="block">
+                                    <div class="pulse-dot w-8 h-8 rounded-full border-2 border-amber-400 bg-[#022c22] flex items-center justify-center shadow-[0_0_15px_rgba(251,191,36,0.2)]">
+                                        <div class="w-1.5 h-1.5 bg-amber-400 rounded-full"></div>
+                                    </div>
+                                </a>
+                                <span class="hidden md:block absolute top-10 name-box font-black text-white uppercase tracking-widest bg-[#063b31] px-2 py-1 border border-slate-700/50 rounded shadow-xl z-30">
+                                    Sumas /<br>Abbotsford
+                                </span>
+                            </div>
+                            <div class="order-1 md:order-3 w-24 md:w-auto text-right md:text-center md:mt-10">
+                                <span class="hidden md:block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                                <span class="block text-sm text-white font-medium">Sumas</span>
+                                <span class="md:hidden block text-xs text-blue-400 font-bold uppercase tracking-tight">WA</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-6"></div>
+
+            <!-- Full NOTE Section -->
+            <div id="about" class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-6">
+                <h3 class="text-amber-400 font-bold text-lg mb-4 flex items-center gap-2">
+                    <span>📝</span>
+                    <span>NOTE: How BorderBug Works</span>
+                </h3>
+                
+                <div class="text-sm text-slate-300 leading-relaxed space-y-3">
+                    <p>
+                        BorderBug gathers real-time border crossing data from three independent sources:
+                    </p>
+                    
+                    <ul class="list-none space-y-2 pl-4">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 font-bold">•</span>
+                            <img src="/wcog.png" alt="WCOG" class="w-4 h-4 mt-0.5 opacity-70">
+                            <div>
+                                <strong class="text-white">WCOG</strong> (Whatcom Council of Governments) — Road sensors measure actual traffic conditions in real-time
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 font-bold">•</span>
+                            <img src="/cbp.svg" alt="CBP" class="w-4 h-4 mt-0.5 opacity-70">
+                            <div>
+                                <strong class="text-white">CBP</strong> (U.S. Customs and Border Protection) — Official U.S. government estimates for southbound crossings
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 font-bold">•</span>
+                            <img src="/cbsa.png" alt="CBSA" class="w-4 h-4 mt-0.5 opacity-70">
+                            <div>
+                                <strong class="text-white">CBSA</strong> (Canada Border Services Agency) — Official Canadian government estimates for northbound crossings
+                            </div>
+                        </li>
+                    </ul>
+
+                    <p class="pt-2">
+                        <strong class="text-white">Why multiple sources?</strong> Each agency uses different measurement methods, which explains why wait times may vary. Showing all three gives you the most complete picture of conditions at the border.
+                    </p>
+
+                    <p class="text-xs text-slate-400 italic pt-2">
+                        BorderBug refreshes automatically every 5 minutes. "N/A" indicates data is not currently available from that source. Weather and traffic cams provided for additional context.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Donate Button -->
+            <div class="mt-6 text-center">
+                <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="benjaminpayne" data-color="#FFDD00" data-emoji="❤️"  data-font="Lato" data-text="Support BorderBug 🐞" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+            </div>
+
         </div>
 
         <!-- Loading State -->
@@ -484,36 +815,9 @@
             <p class="opacity-80">Loading border wait times...</p>
         </div>
 
-        <!-- NOTE Section -->
-        <div id="noteSection" class="hidden note-section mb-8">
-            <p class="note-text">
-                <strong>NOTE:</strong> To give you a more complete picture of conditions at the border, this dashboard shows wait times from multiple sources: road sensor data from the Whatcom Council of Governments (a regional transportation planning agency) and estimates from U.S. Customs and Border Protection (U.S.-bound traffic only) and the Canada Border Services Agency (Canada-bound traffic only).
-            </p>
-            <p class="note-text" style="margin-top: 12px;">
-                Since these are different sources with different methodologies, they often differ in what they report.
-            </p>
-
-            <p class="legend-header">Data source key</p>
-
-            <div class="legend">
-                <div class="legend-item">
-                    <img src="/wcog.png" alt="WCOG" class="source-logo-legend">
-                    <span class="equals">=</span>
-                    <div class="legend-text">Whatcom Council of Governments</div>
-                </div>
-                <div class="legend-item">
-                    <img src="/cbp.svg" alt="CBP" class="source-logo-legend">
-                    <span class="equals">=</span>
-                    <div class="legend-text">U.S. Customs and Border Protection</div>
-                </div>
-                <div class="legend-item">
-                    <img src="/cbsa.png" alt="CBSA" class="source-logo-legend">
-                    <span class="equals">=</span>
-                    <div class="legend-text">Canada Border Services Agency</div>
-                </div>
-            </div>
-
-            <p class="legend-note">N/A indicates data is not currently available from that source.</p>
+        <!-- Content - Paired Crossings -->
+        <div id="content" class="hidden space-y-6">
+            <!-- Pairs will be inserted here -->
         </div>
 
         <!-- Content - Paired Crossings -->
@@ -522,8 +826,8 @@
         </div>
 
         <!-- How It Works Section -->
-        <div id="how-it-works" class="info-section p-8 mt-8">
-            <h2 class="text-3xl font-bold mb-5">How it works</h2>
+        <div id="about" class="info-section p-8 mt-8">
+            <h2 class="text-3xl font-bold mb-5">About</h2>
             <div class="opacity-90 space-y-4 leading-relaxed">
                 <p>
                     My name is Benjamin Payne, and I live in Bellingham, Washington. After having moved here in 2025, I realized that there existed no online dashboard to check wait times at all five ports of entry along the U.S.-Canada border in Whatcom County. So, I made this web app. It retrieves the latest available border crossing wait times, traffic cam images, and weather conditions — from a multitude of otherwise messy government datasets — and presents it all in a clean layout.
@@ -571,7 +875,7 @@
                 usLat: 49.0009,
                 usLon: -122.7536,
                 canadaFilter: 'Douglas',
-                canadaDisplay: 'Entering Surrey/Douglas/White Rock, BC',
+                canadaDisplay: 'Entering Surrey / White Rock, BC',
                 canadaLat: 49.0009,
                 canadaLon: -122.7536,
                 showUsCommercial: false,
@@ -595,7 +899,7 @@
                 usLat: 49.0020,
                 usLon: -122.7353,
                 canadaFilter: 'Pacific Highway',
-                canadaDisplay: 'Entering Surrey/Douglas/White Rock, BC',
+                canadaDisplay: 'Entering Surrey / White Rock, BC',
                 canadaLat: 49.0020,
                 canadaLon: -122.7353,
                 showUsCommercial: true,
@@ -611,7 +915,7 @@
                 anchorId: 'pacific-highway'
             },
             {
-                header: 'Lynden crossing',
+                header: 'Lynden, WA / Aldergrove, BC crossing',
                 subhead: 'Along State Route 539 (Guide Meridian Road) in Washington and Highway 13 (Diversion Street) in British Columbia. Open 8 a.m. to midnight.',
                 usName: 'Lynden',
                 usCrossing: null,
@@ -619,15 +923,15 @@
                 usLat: 49.0019,
                 usLon: -122.4852,
                 canadaFilter: 'Aldergrove',
-                canadaDisplay: 'Entering Langley Township/Aldergrove, BC',
+                canadaDisplay: 'Entering Aldergrove / Langley Township, BC',
                 canadaLat: 49.0019,
                 canadaLon: -122.4852,
                 showUsCommercial: true,
                 showCanadaCommercial: true,
                 usCamUrl: 'https://www.drivebc.ca/images/169.jpg',
-                usCamCaption: 'U.S.-bound traffic approaching the Lynden crossing',
+                usCamCaption: 'U.S.-bound traffic approaching the Lynden/Aldergrove crossing',
                 canadaCamUrl: 'https://images.wsdot.wa.gov/nw/539vc01510.jpg',
-                canadaCamCaption: 'Canada-bound traffic approaching the Lynden crossing',
+                canadaCamCaption: 'Canada-bound traffic approaching the Lynden/Aldergrove crossing',
                 wcogIds: {
                     us: { standard: 611, nexus: 905, commercial: 749 },
                     canada: { standard: 12, nexus: 758, commercial: 753 }
@@ -635,7 +939,7 @@
                 anchorId: 'lynden'
             },
             {
-                header: 'Sumas crossing',
+                header: 'Sumas, WA / Abbotsford, BC crossing',
                 subhead: 'Along State Route 9 (Cherry Street) in Washington and Highway 11 (Sumas Way) in British Columbia. Open 24/7.',
                 usName: 'Sumas',
                 usCrossing: null,
@@ -649,9 +953,9 @@
                 showUsCommercial: true,
                 showCanadaCommercial: true,
                 usCamUrl: 'https://www.drivebc.ca/images/170.jpg',
-                usCamCaption: 'U.S.-bound traffic approaching the Sumas crossing',
+                usCamCaption: 'U.S.-bound traffic approaching the Sumas/Abbotsford crossing',
                 canadaCamUrl: 'https://images.wsdot.wa.gov/nw/009vc09781.jpg',
-                canadaCamCaption: 'Canada-bound traffic approaching the Sumas crossing',
+                canadaCamCaption: 'Canada-bound traffic approaching the Sumas/Abbotsford crossing',
                 wcogIds: {
                     us: { standard: 610, nexus: 904, commercial: null },
                     canada: { standard: 15, nexus: 756, commercial: 754 }
@@ -659,7 +963,7 @@
                 anchorId: 'sumas'
             },
             {
-                header: 'Point Roberts crossing',
+                header: 'Point Roberts, WA / Tsawwassen, BC crossing',
                 subhead: 'Along Tyee Drive in Point Roberts and 56th Street in Tsawwassen. Open 24/7.',
                 usName: 'Blaine',
                 usCrossing: 'Point Roberts',
@@ -933,7 +1237,7 @@
 
         function renderUSCard(port, pair, pairIndex) {
             const timestamp = new Date().getTime();
-            const isPointRoberts = pair.header === 'Point Roberts crossing';
+            const isPointRoberts = pair.header === 'Point Roberts, WA / Tsawwassen, BC crossing';
             const captionAlign = isPointRoberts ? 'text-left' : 'text-center';
             
             const trafficCamHtml = pair.usCamUrl 
@@ -945,7 +1249,7 @@
                         <p class="text-xs opacity-60 mt-2 ${captionAlign}">${pair.usCamCaption}</p>
                     </div>
                 `
-                : `<p class="text-xs opacity-60 mt-4 text-left">${isPointRoberts ? 'No WCOG road sensors at the Point Roberts crossing<br>No traffic cams posted at the Point Roberts crossing' : ''}</p>`;
+                : `<p class="text-xs opacity-60 mt-4 text-left">${isPointRoberts ? 'No WCOG road sensors at the Point Roberts / Tsawwassen crossing<br>No traffic cams posted at the Point Roberts / Tsawwassen crossing' : ''}</p>`;
 
             if (!port) {
                 return `
@@ -1064,7 +1368,7 @@
 
         function renderCanadaCard(port, pair, pairIndex) {
             const timestamp = new Date().getTime();
-            const isPointRoberts = pair.header === 'Point Roberts crossing';
+            const isPointRoberts = pair.header === 'Point Roberts, WA / Tsawwassen, BC crossing';
             const captionAlign = isPointRoberts ? 'text-left' : 'text-center';
             
             const trafficCamHtml = pair.canadaCamUrl 
@@ -1076,7 +1380,7 @@
                         <p class="text-xs opacity-60 mt-2 ${captionAlign}">${pair.canadaCamCaption}</p>
                     </div>
                 `
-                : `<p class="text-xs opacity-60 mt-4 text-left">${isPointRoberts ? 'No WCOG road sensors at the Point Roberts crossing<br>No traffic cams posted at the Point Roberts crossing' : ''}</p>`;
+                : `<p class="text-xs opacity-60 mt-4 text-left">${isPointRoberts ? 'No WCOG road sensors at the Point Roberts / Tsawwassen crossing<br>No traffic cams posted at the Point Roberts / Tsawwassen crossing' : ''}</p>`;
 
             if (!port || !hasCanadaData(port)) {
                 return `
