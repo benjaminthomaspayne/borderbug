@@ -536,6 +536,7 @@
 @media (max-width: 767px) {
     .compass-rose {
         transform: rotate(90deg);
+        margin-bottom: 20px;
     }
 }
 
@@ -556,7 +557,13 @@
         overflow-x: hidden;
     }
 }
-
+@media (max-width: 640px) {
+    /* Prevent button text cutoff */
+    #bmc-wbtn {
+        font-size: 16px !important;
+        padding: 8px 16px !important;
+    }
+}
 
     </style>
 </head>
@@ -873,9 +880,9 @@
     I will always make sure BorderBug is free, but if you'd like, you can…
 </p>
 <div class="text-center my-6">
-    <a href="https://www.buymeacoffee.com/benjaminpayne" target="_blank">
-        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
-    </a>
+<a href="https://www.buymeacoffee.com/benjaminpayne" target="_blank" style="display: inline-block;">
+    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
+</a>
 </div>
                 <p class="text-center text-sm opacity-70">
                     (after all, this is the Pacific Northwest ☕)
