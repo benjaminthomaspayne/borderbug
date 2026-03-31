@@ -797,49 +797,49 @@
             <!-- Divider -->
             <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-6"></div>
 
-            <!-- Full NOTE Section -->
+<!-- Full NOTE Section -->
             <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-6">
                 <h3 class="text-amber-400 font-bold text-lg mb-4 flex items-center gap-2">
                     <span>📝</span>
                     <span>NOTE: How BorderBug Works</span>
                 </h3>
                 
-                <div class="text-sm text-slate-300 leading-relaxed space-y-3">
-                    <p>
-                        BorderBug gathers real-time border crossing data from three independent sources:
-                    </p>
-                    
-                    <ul class="list-none space-y-2 pl-4">
-                        <li class="flex items-start gap-2">
-                            <span class="text-amber-400 font-bold">•</span>
-                            <img src="/wcog.png" alt="WCOG" class="source-logo opacity-70">
-                            <div>
-                                <strong class="text-white">WCOG</strong> (Whatcom Council of Governments) — Road sensors measure actual traffic conditions in real-time
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-amber-400 font-bold">•</span>
-                            <img src="/cbp.svg" alt="CBP" class="source-logo opacity-70">
-                            <div>
-                                <strong class="text-white">CBP</strong> (U.S. Customs and Border Protection) — Official U.S. government estimates for southbound crossings
-                            </div>
-                        </li>
-                        <li class="flex items-start gap-2">
-                            <span class="text-amber-400 font-bold">•</span>
-                            <img src="/cbsa.png" alt="CBSA" class="source-logo opacity-70">
-                            <div>
-                                <strong class="text-white">CBSA</strong> (Canada Border Services Agency) — Official Canadian government estimates for northbound crossings
-                            </div>
-                        </li>
-                    </ul>
-
-                    <p class="pt-2">
-                        <strong class="text-white">Why multiple sources?</strong> Each agency uses different measurement methods, which explains why wait times may vary. Showing all three gives you the most complete picture of conditions at the border.
+                <div class="text-sm text-slate-300 leading-relaxed">
+                    <p class="mb-4 text-center">
+                        To give you a more complete picture of conditions at the border, BorderBug crawls through multiple sources: road sensor data from the Whatcom Council of Governments (a regional transportation planning agency) and estimates from U.S. Customs and Border Protection (U.S.-bound traffic only) and the Canada Border Services Agency (Canada-bound traffic only).
                     </p>
 
-                    <p class="text-xs text-slate-400 italic pt-2">
-                        BorderBug refreshes automatically every 5 minutes. "N/A" indicates data is not currently available from that source. Weather and traffic cams provided for additional context.
-                    </p>
+                    <p class="text-center font-semibold text-amber-400 mb-3 underline">Data source key</p>
+
+                    <!-- Visual Legend -->
+                    <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-10 my-6">
+                        <div class="flex items-center gap-2">
+                            <img src="/wcog.png" alt="WCOG" class="h-6 w-auto opacity-70">
+                            <span class="text-lg font-bold opacity-50">=</span>
+                            <span class="text-xs font-medium">Whatcom Council of Governments</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img src="/cbp.svg" alt="CBP" class="h-6 w-auto opacity-70">
+                            <span class="text-lg font-bold opacity-50">=</span>
+                            <span class="text-xs font-medium">U.S. Customs and Border Protection</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <img src="/cbsa.png" alt="CBSA" class="h-6 w-auto opacity-70">
+                            <span class="text-lg font-bold opacity-50">=</span>
+                            <span class="text-xs font-medium">Canada Border Services Agency</span>
+                        </div>
+                    </div>
+
+                    <!-- Additional explanation -->
+                    <div class="mt-6 text-xs space-y-3">
+                        <p>
+                            Since these are different sources with different methodologies, they often differ in what they report. That's why this dashboard displays data from all three simultaneously.
+                        </p>
+
+                        <p class="text-slate-400 italic pt-2">
+                            BorderBug refreshes automatically every 5 minutes. "N/A" indicates data is not currently available from that source. Weather and traffic cams provided for additional context.
+                        </p>
+                    </div>
                 </div>
             </div>
 
