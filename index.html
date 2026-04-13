@@ -847,6 +847,165 @@
             <div class="mt-6 text-center">
                 <p class="text-slate-300 text-base mb-3">Enjoying BorderBug?</p>
                 <script type="text/javascript" src="https://cdnjs.buymeacoffee.com/1.0.0/button.prod.min.js" data-name="bmc-button" data-slug="benjaminpayne" data-color="#FFDD00" data-emoji=""  data-font="Cookie" data-text="Buy me a coffee" data-outline-color="#000000" data-font-color="#000000" data-coffee-color="#ffffff" ></script>
+ <!-- USD <> CAD Currency Converter Widget -->
+<div class="mt-6" id="currency-converter">
+  <style>
+    #currency-converter .bb-card { background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.12); border-radius: 20px; backdrop-filter: blur(10px); padding: 28px; background-color: #054a38; }
+    #currency-converter .bb-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+    #currency-converter .bb-title { font-size: 15px; font-weight: 700; color: #fbbf24; margin: 0; letter-spacing: -0.01em; display: flex; align-items: center; gap: 8px; }
+    #currency-converter .bb-rate-pill { font-size: 12px; color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; padding: 4px 10px; white-space: nowrap; }
+    #currency-converter .bb-rate-pill.live { color: #4ade80; border-color: rgba(74,222,128,0.3); background: rgba(34,197,94,0.1); }
+    #currency-converter .bb-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    #currency-converter .bb-input-row { display: flex; align-items: stretch; background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+    #currency-converter .bb-input-row:focus-within { border-color: rgba(251,191,36,0.6); }
+    #currency-converter .bb-tag { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; padding: 0 12px; display: flex; align-items: center; border-right: 1px solid rgba(255,255,255,0.1); min-width: 50px; justify-content: center; }
+    #currency-converter .bb-input { border: none; background: transparent; color: #ffffff; font-size: 20px; font-weight: 700; padding: 0 12px; height: 52px; flex: 1; outline: none; width: 100%; min-width: 0; font-variant-numeric: tabular-nums; }
+    #currency-converter .bb-input::placeholder { color: rgba(255,255,255,0.25); font-weight: 400; font-size: 16px; }
+    #currency-converter .bb-input::-webkit-inner-spin-button, #currency-converter .bb-input::-webkit-outer-spin-button { -webkit-appearance: none; }
+    #currency-converter .bb-columns { display: flex; align-items: stretch; }
+    #currency-converter .bb-field { flex: 1; min-width: 0; }
+    #currency-converter .bb-vert-divider { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding: 0 14px 4px; gap: 6px; }
+    #currency-converter .bb-vline { width: 1px; flex: 1; background: rgba(255,255,255,0.12); }
+    #currency-converter .bb-horiz-divider { display: none; flex-direction: row; align-items: center; justify-content: center; margin: 6px 0; gap: 10px; }
+    #currency-converter .bb-hline { flex: 1; height: 1px; background: rgba(255,255,255,0.12); }
+    #currency-converter .bb-swap { background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15); border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: rgba(255,255,255,0.5); font-size: 15px; flex-shrink: 0; transition: border-color 0.2s, color 0.2s, background 0.2s; }
+    #currency-converter .bb-swap:hover { border-color: #fbbf24; color: #fbbf24; background: rgba(251,191,36,0.1); }
+    #currency-converter .bb-result { background: rgba(251,191,36,0.12); border: 2px solid rgba(251,191,36,0.25); border-radius: 14px; padding: 14px 18px; margin-top: 14px; display: flex; align-items: baseline; justify-content: center; gap: 10px; flex-wrap: wrap; }
+    #currency-converter .bb-result-eq { font-size: 13px; color: rgba(255,255,255,0.5); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+    #currency-converter .bb-result-main { font-size: 26px; font-weight: 700; color: #fbbf24; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+    #currency-converter .bb-result-inv { font-size: 11px; color: rgba(255,255,255,0.35); margin-top: 4px; text-align: center; }
+    #currency-converter .bb-footer { text-align: right; margin-top: 12px; font-size: 11px; color: rgba(255,255,255,0.35); }
+    #currency-converter .bb-err { font-size: 12px; color: #f87171; margin-top: 8px; }
+    @keyframes bb-pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    #currency-converter .bb-pulse { animation: bb-pulse 1.4s ease-in-out infinite; }
+    @media (max-width: 480px) {
+      #currency-converter .bb-columns { flex-direction: column; }
+      #currency-converter .bb-vert-divider { display: none; }
+      #currency-converter .bb-horiz-divider { display: flex; }
+    }
+  </style>
+
+  <div class="bb-card">
+    <div class="bb-header">
+      <p class="bb-title">💰 USD ↔ CAD converter</p>
+      <span class="bb-rate-pill" id="cc-rate-pill"><span class="bb-pulse">●</span> fetching…</span>
+    </div>
+
+    <div class="bb-columns">
+      <div class="bb-field">
+        <div class="bb-label"><span>🇺🇸</span> US dollar</div>
+        <div class="bb-input-row">
+          <span class="bb-tag">USD</span>
+          <input class="bb-input" id="cc-usd" type="number" min="0" step="any" placeholder="0.00" inputmode="decimal" />
+        </div>
+      </div>
+
+      <div class="bb-vert-divider">
+        <div class="bb-vline"></div>
+        <button class="bb-swap" id="cc-swap-vert" aria-label="Swap currencies">⇄</button>
+      </div>
+
+      <div class="bb-horiz-divider">
+        <div class="bb-hline"></div>
+        <button class="bb-swap" id="cc-swap-horiz" aria-label="Swap currencies">⇅</button>
+        <div class="bb-hline"></div>
+      </div>
+
+      <div class="bb-field">
+        <div class="bb-label"><span>🇨🇦</span> Canadian dollar</div>
+        <div class="bb-input-row">
+          <span class="bb-tag">CAD</span>
+          <input class="bb-input" id="cc-cad" type="number" min="0" step="any" placeholder="0.00" inputmode="decimal" />
+        </div>
+      </div>
+    </div>
+
+    <div id="cc-result-box" style="display:none;">
+      <div class="bb-result">
+        <span class="bb-result-eq" id="cc-res-eq"></span>
+        <span class="bb-result-main" id="cc-res-main"></span>
+      </div>
+      <div class="bb-result-inv" id="cc-res-inv"></div>
+    </div>
+
+    <div class="bb-err" id="cc-err" style="display:none;"></div>
+    <div class="bb-footer">Rates via European Central Bank (updated daily)</div>
+  </div>
+
+  <script>
+  (function(){
+    let rate = null;
+    let dir = 'usd';
+    const usdIn = document.getElementById('cc-usd');
+    const cadIn = document.getElementById('cc-cad');
+    const pill  = document.getElementById('cc-rate-pill');
+    const box   = document.getElementById('cc-result-box');
+    const resEq = document.getElementById('cc-res-eq');
+    const resMn = document.getElementById('cc-res-main');
+    const resInv= document.getElementById('cc-res-inv');
+    const errEl = document.getElementById('cc-err');
+
+    const fmt = n => new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
+
+    function updatePill() {
+      if (!rate) return;
+      pill.textContent = dir === 'usd'
+        ? '1 USD = ' + fmt(rate) + ' CAD'
+        : '1 CAD = ' + fmt(1/rate) + ' USD';
+      pill.classList.add('live');
+    }
+
+    fetch('https://api.frankfurter.dev/v2/rates?base=USD&quotes=CAD')
+      .then(r=>r.json()).then(d=>{
+        rate = d[0]?.rate ?? d?.rates?.CAD;
+        if(!rate) throw 0;
+        updatePill();
+      }).catch(()=>{
+        pill.textContent = 'rate unavailable';
+        errEl.textContent = 'Could not load live rate — please refresh.';
+        errEl.style.display='block';
+      });
+
+    function show(fromAmt, fromCur, toAmt, toCur){
+      resEq.textContent = fmt(fromAmt) + ' ' + fromCur + ' =';
+      resMn.textContent = fmt(toAmt) + ' ' + toCur;
+      const inv = fromCur==='USD' ? (1/rate) : rate;
+      resInv.textContent = '1 ' + toCur + ' = ' + fmt(inv) + ' ' + fromCur;
+      box.style.display='block';
+    }
+
+    function doSwap(){
+      const u=usdIn.value, c=cadIn.value;
+      usdIn.value=c; cadIn.value=u;
+      dir = dir === 'usd' ? 'cad' : 'usd';
+      updatePill();
+      const v=parseFloat(dir==='usd' ? usdIn.value : cadIn.value);
+      if(!isNaN(v)&&rate){
+        if(dir==='usd'){ const conv=v*rate; cadIn.value=fmt(conv); show(v,'USD',conv,'CAD'); }
+        else { const conv=v/rate; usdIn.value=fmt(conv); show(v,'CAD',conv,'USD'); }
+      } else { box.style.display='none'; }
+    }
+
+    usdIn.addEventListener('input',()=>{
+      dir='usd'; updatePill();
+      const v=parseFloat(usdIn.value);
+      if(!isNaN(v)&&rate){ const c=v*rate; cadIn.value=fmt(c); show(v,'USD',c,'CAD'); }
+      else{ cadIn.value=''; box.style.display='none'; }
+    });
+
+    cadIn.addEventListener('input',()=>{
+      dir='cad'; updatePill();
+      const v=parseFloat(cadIn.value);
+      if(!isNaN(v)&&rate){ const u=v/rate; usdIn.value=fmt(u); show(v,'CAD',u,'USD'); }
+      else{ usdIn.value=''; box.style.display='none'; }
+    });
+
+    document.getElementById('cc-swap-vert').addEventListener('click', doSwap);
+    document.getElementById('cc-swap-horiz').addEventListener('click', doSwap);
+  })();
+  </script>
+</div>
+<!-- End Currency Converter Widget -->
             </div>
 
         </div>
@@ -900,7 +1059,8 @@
             <p class="mb-3">BorderBug by <a href="https://btpayne.com/" target="_blank" rel="noopener noreferrer">Benjamin Payne</a>. © 2026</p>
             <p>• Wait time data: Whatcom Council of Governments (WCOG), U.S. Customs and Border Protection (CBP), Canada Border Services Agency (CBSA)</p>
             <p>• Traffic cam images: BC Ministry of Transportation and Transit, Washington State Department of Transportation</p>
-            <p class="mb-3">• Weather data: National Oceanic and Atmospheric Administration (NOAA), Environment and Climate Change Canada (Government of Canada) through Open-Meteo.com</p>
+            <p>• Weather data: National Oceanic and Atmospheric Administration (NOAA), Environment and Climate Change Canada (Government of Canada) via Open-Meteo.com</p>
+            <p class="mb-3">• Currency exchange rates: European Central Bank via Frankfurter</p>
             <p class="text-xs opacity-60 mt-3">Contains information licensed under Canada's Open Government Licence</p>
             <p class="text-xs opacity-60">Wait times are estimates and may vary</p>
             <p class="text-xs opacity-60">This is an unofficial third-party application and is not endorsed by any government agency</p>
@@ -949,7 +1109,7 @@
                 showCanadaCommercial: true,
                 usCamUrl: 'https://www.drivebc.ca/images/15.jpg',
                 usCamCaption: 'U.S.-bound traffic approaching the Pacific Highway crossing',
-                canadaCamUrl: 'https://images.wsdot.wa.gov/nw/543vc00098.jpg',
+                canadaCamUrl: 'https://images.wsdot.wa.gov/nw/543vc00099.jpg',
                 canadaCamCaption: 'Canada-bound traffic approaching the Pacific Highway crossing',
                 wcogIds: {
                     us: { standard: 3, nexus: 9, commercial: 10 },
