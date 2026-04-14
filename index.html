@@ -974,17 +974,31 @@
       box.style.display='block';
     }
 
-    function doSwap(){
-      const u=usdIn.value, c=cadIn.value;
-      usdIn.value=c; cadIn.value=u;
-      dir = dir === 'usd' ? 'cad' : 'usd';
-      updatePill();
-      const v=parseFloat(dir==='usd' ? usdIn.value : cadIn.value);
-      if(!isNaN(v)&&rate){
-        if(dir==='usd'){ const conv=v*rate; cadIn.value=fmt(conv); show(v,'USD',conv,'CAD'); }
-        else { const conv=v/rate; usdIn.value=fmt(conv); show(v,'CAD',conv,'USD'); }
-      } else { box.style.display='none'; }
-    }
+function doSwap(){
+  dir = dir === 'usd' ? 'cad' : 'usd';
+  updatePill();
+
+  const usdField = usdIn.closest('.bb-field');
+  const cadField = cadIn.closest('.bb-field');
+  const parent = usdField.parentNode;
+  const usdVal = usdIn.value;
+  const cadVal = cadIn.value;
+
+  if (dir === 'cad') {
+    parent.insertBefore(cadField, usdField);
+  } else {
+    parent.insertBefore(usdField, cadField);
+  }
+
+  usdIn.value = usdVal;
+  cadIn.value = cadVal;
+
+  const v = parseFloat(dir === 'usd' ? usdIn.value : cadIn.value);
+  if(!isNaN(v) && rate){
+    if(dir === 'usd'){ const conv=v*rate; cadIn.value=fmt(conv); show(v,'USD',conv,'CAD'); }
+    else { const conv=v/rate; usdIn.value=fmt(conv); show(v,'CAD',conv,'USD'); }
+  } else { box.style.display='none'; }
+}
 
     usdIn.addEventListener('input',()=>{
       dir='usd'; updatePill();
