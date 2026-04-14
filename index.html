@@ -978,20 +978,17 @@ function doSwap(){
   dir = dir === 'usd' ? 'cad' : 'usd';
   updatePill();
 
+  const columns = document.querySelector('#currency-converter .bb-columns');
   const usdField = usdIn.closest('.bb-field');
   const cadField = cadIn.closest('.bb-field');
-  const parent = usdField.parentNode;
-  const usdVal = usdIn.value;
-  const cadVal = cadIn.value;
 
   if (dir === 'cad') {
-    parent.insertBefore(cadField, usdField);
+    columns.insertBefore(cadField, columns.firstChild);
+    columns.appendChild(usdField);
   } else {
-    parent.insertBefore(usdField, cadField);
+    columns.insertBefore(usdField, columns.firstChild);
+    columns.appendChild(cadField);
   }
-
-  usdIn.value = usdVal;
-  cadIn.value = cadVal;
 
   const v = parseFloat(dir === 'usd' ? usdIn.value : cadIn.value);
   if(!isNaN(v) && rate){
