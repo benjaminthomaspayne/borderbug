@@ -88,7 +88,83 @@
             line-height: 1.6;
             font-size: 15px;
         }
+        .time-notice {
+            max-width: 44rem;
+            margin: 0 auto 24px auto;
+            padding: 16px 20px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.10);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+            text-align: center;
+        }
 
+        .time-notice-heading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fbbf24;
+        }
+
+        .time-notice p {
+            margin: 0 0 8px 0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #e2e8f0;
+        }
+
+        .time-notice-emoji {
+            flex: none;
+            font-size: 18px;
+            line-height: 1;
+        }
+
+        .time-notice-br {
+            display: none;
+        }
+
+        .time-notice a {
+            color: #fbbf24;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .time-notice a:hover {
+            color: #fde68a;
+        }
+
+        .time-notice p:last-child {
+            margin-bottom: 0;
+        }
+
+        .time-notice p.time-notice-heading {
+            color: #fbbf24;
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .time-notice p.time-notice-lead {
+            font-size: 15px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .time-notice p.time-notice-footer {
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(56, 189, 248, 0.25);
+            font-size: 13px;
+            color: #fde68a;
+        }
+
+        @media (max-width: 640px) {
+            .time-notice-br {
+                display: inline;
+            }
+        }
         .crossing-quick-links {
             font-size: 14px;
             margin-bottom: 28px;
@@ -628,7 +704,18 @@
 
             <!-- Divider -->
             <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-slate-600 to-transparent mb-8"></div>
-
+            
+            <!-- Time Change Notice (B.C. permanent DST) -->
+            <div id="time-change-notice" class="time-notice" role="note">
+                <p class="time-notice-heading">
+                    <span class="time-notice-emoji" aria-hidden="true">⏰</span>
+                    <span>Heads up: the times they <br class="time-notice-br">are a-changin'!</span>
+                </p>
+                <p class="time-notice-lead">Starting Nov. 1, British Columbia will be one hour ahead of Washington.</p>
+                <p>This is because B.C. <a href="https://www.cascadiadaily.com/2026/mar/02/british-columbia-moves-to-year-round-daylight-saving-time/" target="_blank" rel="noopener noreferrer">decided</a> this year to "ditch the switch" and adopt permanent daylight saving time. Meanwhile, Washington will fall back an hour to standard time, until coming back into alignment with B.C. on March 14, 2027, when DST resumes.</p>
+                <p class="time-notice-footer">BorderBug will add a new clock feature on Nov. 1 to remind travelers of this new time difference.</p>
+            </div>
+            
             <!-- Mini Context Note -->
             <div class="mb-6 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20 text-center">
                 <p class="text-slate-200 text-sm leading-relaxed">
@@ -863,11 +950,6 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
             </svg>
             <p class="opacity-80">Loading border wait times...</p>
-        </div>
-
-        <!-- Content - Paired Crossings -->
-        <div id="content" class="hidden space-y-6">
-            <!-- Pairs will be inserted here -->
         </div>
 
         <!-- Content - Paired Crossings -->
